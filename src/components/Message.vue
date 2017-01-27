@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class='col-md-12'>
-            <div class="alert" :class="alert_type" role="alert" v-if="show_message">{{ message.message }}</div>
+            <div class="alert" :class="alert_type" role="alert" v-if="show_message" v-html='message.message'></div>
         </div>
     </div>
 </template>

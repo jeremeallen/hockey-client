@@ -28,13 +28,13 @@
             <h3>Add new season</h3>
             <div class="form-group">
               <label for="startYear">Start Year</label>
-              <input type="text" class="form-control" placeholder="Start Year" v-model='season.start_year'>
+              <input type="text" class="form-control" placeholder="Start Year" maxlength='4' v-model='season.start_year'>
             </div>
             <div class="form-group">
               <label for="endYear">End Year</label>
-              <input type="text" class="form-control" placeholder="End Year" v-model='season.end_year'>
+              <input type="text" class="form-control" placeholder="End Year" maxlength='4' v-model='season.end_year'>
             </div>
-            <button type="submit" class="btn btn-success">Add</button>
+            <button type="submit" class="btn btn-success" :disabled="isDisabled">Add</button>
           </form>
         </div>
       </div>
@@ -70,6 +70,11 @@
           this.seasons = response.data;
         });
     },
+    computed: {
+      isDisabled() {
+        return false;
+      },
+    },
     methods: {
       showAddForm() {
         this.showAdd = true;
@@ -90,6 +95,15 @@
             };
 
             this.showAdd = false;
+          })
+          .catch((error) => {
+            const messageObject = error.response.data;
+            const keys = Object.keys(messageObject);
+            const message = keys.map(key => messageObject[key]).join('<br />');
+            this.$store.dispatch('showMessage', {
+              type: 'error',
+              message,
+            });
           });
       },
       deleteSeason(id) {

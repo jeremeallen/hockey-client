@@ -133,7 +133,7 @@ export default {
           <div class="modal-footer">
             <slot name="footer">
               <button type="button" :class="cancelClass" @click="cancel">{{cancelText}}</button>
-              <button type="button" :class="okClass" @click="ok">{{okText}}</button>
+              <button type="button" :class="okClass" class="btn-primary" @click="ok">{{okText}}</button>
             </slot>
           </div>
         </div>
