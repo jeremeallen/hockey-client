@@ -1,8 +1,9 @@
 <template>
   <div class='row'>
     <div class='col-md-8 col-md-offset-2'>
+      <h3>Seasons</h3>
       <div class="panel panel-default">
-        <div class="panel-heading">Seasons</div>
+        <div class="panel-heading">Season will group the stats</div>
         <div class="panel-body">
           <table class='table table-striped'>
             <tr>
@@ -11,12 +12,15 @@
               <th class='text-center'>End</th>
               <th class='text-center'>Actions</th>
             </tr>
-            <tr v-for='season in seasons'>
+            <tr v-for='season in sortedSeasons'>
               <td class='text-center'>{{ season.id }}</td>
               <td class='text-center'>{{ season.start_year }}</td>
               <td class='text-center'>{{ season.end_year }}</td>
               <td class='text-center'>
-                <span class="glyphicon glyphicon-pencil text-warning" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-pencil text-warning"
+                      aria-hidden="true"
+                      @click='editSeason(season)'
+                ></span>
                 <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"
                       @click='deleteSeason(season.id)'></span>
               </td>
@@ -24,8 +28,8 @@
           </table>
           <button class='btn btn-primary' @click='showAddForm'>Add new season</button>
 
-          <form v-if='showAdd' class='form-inline' @submit.prevent='saveNewSeason'>
-            <h3>Add new season</h3>
+          <form v-if='showAdd.show' class='form-inline' @submit.prevent='saveSeason'>
+            <h3>{{ showAdd.title }}</h3>
             <div class="form-group">
               <label for="startYear">Start Year</label>
               <input type="text" class="form-control" placeholder="Start Year" maxlength='4' v-model='season.start_year'>
@@ -34,7 +38,7 @@
               <label for="endYear">End Year</label>
               <input type="text" class="form-control" placeholder="End Year" maxlength='4' v-model='season.end_year'>
             </div>
-            <button type="submit" class="btn btn-success" :disabled="isDisabled">Add</button>
+            <button type="submit" class="btn btn-success" :disabled="isDisabled">{{ showAdd.buttonText }}</button>
           </form>
         </div>
       </div>
@@ -55,7 +59,12 @@
     data() {
       return {
         seasons: [],
-        showAdd: false,
+        showAdd: {
+          mode: 'add',
+          show: false,
+          title: 'Add new season',
+          buttonText: 'Add',
+        },
         season: {
           start_year: '',
           end_year: '',
@@ -74,37 +83,35 @@
       isDisabled() {
         return false;
       },
+
+      sortedSeasons() {
+        return this.seasons.sort((a, b) => ((a.start_year > b.start_year) ? 0 : -1));
+      },
     },
     methods: {
       showAddForm() {
-        this.showAdd = true;
+        this.showAdd.show = true;
+        this.showAdd.mode = 'add';
+        this.showAdd.title = 'Add new season';
+        this.season = {};
       },
-      saveNewSeason() {
-        this.$http.post('http://hockey.app/seasons', this.season)
-          .then((response) => {
-            this.$store.dispatch('showMessage', {
-              type: 'success',
-              message: 'Season created',
-            });
-            this.seasons.push(response.data);
+      editSeason(season) {
+        this.showAdd.show = true;
+        this.showAdd.mode = 'edit';
+        this.showAdd.title = 'Edit season';
+        this.showAdd.buttonText = 'Save';
 
-            // Reset the form
-            this.season = {
-              start_year: '',
-              end_year: '',
-            };
+        this.season = season;
+      },
+      saveSeason() {
+        let url = 'http://hockey.app/seasons';
 
-            this.showAdd = false;
-          })
-          .catch((error) => {
-            const messageObject = error.response.data;
-            const keys = Object.keys(messageObject);
-            const message = keys.map(key => messageObject[key]).join('<br />');
-            this.$store.dispatch('showMessage', {
-              type: 'error',
-              message,
-            });
-          });
+        if (this.showAdd.mode === 'edit') {
+          url += `/${this.season.id}`;
+          this.sendPut(url, this.season);
+        } else {
+          this.sendPost(url, this.season);
+        }
       },
       deleteSeason(id) {
         this.show = true;
@@ -125,6 +132,65 @@
       cancel() {
         this.show = false;
         this.deletingId = null;
+      },
+      sendPost(url, data) {
+        this.$http.post(url, data)
+          .then((response) => {
+            this.$store.dispatch('showMessage', {
+              type: 'success',
+              message: 'Season created',
+            });
+            this.seasons.push(response.data);
+
+            this.resetForm();
+          })
+          .catch((error) => {
+            this.handleErrors(error);
+          });
+      },
+      sendPut(url, data) {
+        this.$http.put(url, data)
+          .then((response) => {
+            this.$store.dispatch('showMessage', {
+              type: 'success',
+              message: 'Season saved',
+            });
+
+            let seasonIndex = null;
+            this.seasons.find((season, index) => {
+              if (season.id === response.data.id) {
+                seasonIndex = index;
+                return true;
+              }
+
+              return false;
+            });
+
+            if (seasonIndex) {
+              this.seasons[seasonIndex] = response.data;
+            }
+
+            this.resetForm();
+          })
+          .catch((error) => {
+            this.handleErrors(error);
+          });
+      },
+      handleErrors(error) {
+        const messageObject = error.response.data;
+        const keys = Object.keys(messageObject);
+        const message = keys.map(key => messageObject[key]).join('<br />');
+        this.$store.dispatch('showMessage', {
+          type: 'error',
+          message,
+        });
+      },
+      resetForm() {
+        this.season = {
+          start_year: '',
+          end_year: '',
+        };
+        this.showAdd.show = false;
       },
     },
   };
