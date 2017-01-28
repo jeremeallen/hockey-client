@@ -12,6 +12,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><router-link to="/">Dashboard</router-link></li>
+                    <router-link to="/conferences" tag='li' active-class='active'><a>Conferences</a></router-link>
                     <router-link to="/seasons" tag='li' active-class='active'><a>Seasons</a></router-link>
                 </ul>
                 <ul class="nav navbar-nav navbar-right ">

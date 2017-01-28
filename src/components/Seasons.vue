@@ -1,9 +1,8 @@
 <template>
   <div class='row'>
     <div class='col-md-8 col-md-offset-2'>
-      <h3>Seasons</h3>
       <div class="panel panel-default">
-        <div class="panel-heading">Season will group the stats</div>
+        <div class="panel-heading">Seasons</div>
         <div class="panel-body">
           <table class='table table-striped'>
             <tr>
@@ -39,6 +38,7 @@
               <input type="text" class="form-control" placeholder="End Year" maxlength='4' v-model='season.end_year'>
             </div>
             <button type="submit" class="btn btn-success" :disabled="isDisabled">{{ showAdd.buttonText }}</button>
+            <button class="btn btn-default" @click.prevent='showAdd.show = false'>Cancel</button>
           </form>
         </div>
       </div>
