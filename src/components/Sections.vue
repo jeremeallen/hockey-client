@@ -148,7 +148,6 @@
         this.deletingId = null;
       },
       sendPost(url, data) {
-        console.log(data);
         this.$http.post(url, data)
           .then((response) => {
             this.$store.dispatch('showMessage', {
