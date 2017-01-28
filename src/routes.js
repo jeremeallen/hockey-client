@@ -5,6 +5,7 @@ import Conferences from './components/Conferences';
 import Home from './components/Home';
 import Seasons from './components/Seasons';
 import Sections from './components/Sections';
+import Teams from './components/Teams';
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,7 @@ const routes = [
   { path: '/dashboard', component: Home },
   { path: '/seasons', component: Seasons },
   { path: '/sections', component: Sections },
+  { path: '/teams', component: Teams },
 ];
 
 const router = new VueRouter({
