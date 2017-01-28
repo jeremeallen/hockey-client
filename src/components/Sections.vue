@@ -8,11 +8,13 @@
                         <tr>
                             <th class='text-center'>id</th>
                             <th class='text-center'>Name</th>
+                            <th class='text-center'>Conference</th>
                             <th class='text-center'>Actions</th>
                         </tr>
                         <tr v-for='section in sections'>
                             <td class='text-center'>{{ section.id }}</td>
                             <td class='text-center'>{{ section.name }}</td>
+                            <td class='text-center'>{{ section.conference.name }}</td>
                             <td class='text-center'>
                 <span class="glyphicon glyphicon-pencil text-warning"
                       aria-hidden="true"
@@ -28,7 +30,18 @@
                     <form v-if='showAdd.show' class='form-inline' @submit.prevent='saveSection'>
                         <h3>{{ showAdd.title }}</h3>
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="conference">Conference</label>
+                            <select class="form-control" v-model='section.conference_id'>
+                                <option
+                                    v-for='conference in conferences'
+                                    :value='conference.id'
+                                    v-text='conference.name'
+                                >
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Section Name</label>
                             <input type="text" class="form-control" placeholder="Name" maxlength='255' v-model='section.name'>
                         </div>
                         <button type="submit" class="btn btn-success" :disabled="isDisabled">{{ showAdd.buttonText }}</button>
@@ -53,6 +66,7 @@
     data() {
       return {
         sections: [],
+        conferences: [],
         showAdd: {
           mode: 'add',
           show: false,
@@ -60,6 +74,7 @@
           buttonText: 'Add',
         },
         section: {
+          conference_id: '',
           name: '',
         },
         show: false,
@@ -68,6 +83,11 @@
     },
     created() {
       this.$http.get('http://hockey.app/sections')
+        .then((response) => {
+          this.sections = response.data;
+        });
+
+      this.$http.get('http://hockey.app/conferences')
         .then((response) => {
           this.conferences = response.data;
         });
@@ -128,6 +148,7 @@
         this.deletingId = null;
       },
       sendPost(url, data) {
+        console.log(data);
         this.$http.post(url, data)
           .then((response) => {
             this.$store.dispatch('showMessage', {
