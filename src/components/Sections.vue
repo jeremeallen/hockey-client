@@ -14,7 +14,7 @@
                         <tr v-for='section in sections'>
                             <td class='text-center'>{{ section.id }}</td>
                             <td class='text-center'>{{ section.name }}</td>
-                            <td class='text-center'>{{ section.conference.name }}</td>
+                            <td class='text-center'>{{ section.conference ? section.conference.name : 'Not set' }}</td>
                             <td class='text-center'>
                 <span class="glyphicon glyphicon-pencil text-warning"
                       aria-hidden="true"
