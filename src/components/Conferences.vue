@@ -29,7 +29,14 @@
                         <h3>{{ showAdd.title }}</h3>
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" placeholder="Name" maxlength='255' v-model='conference.name'>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Name"
+                                maxlength='255'
+                                v-model='conference.name'
+                                autofocus
+                            >
                         </div>
                         <button type="submit" class="btn btn-success" :disabled="isDisabled">{{ showAdd.buttonText }}</button>
                         <button class="btn btn-default" @click.prevent='showAdd.show = false'>Cancel</button>
