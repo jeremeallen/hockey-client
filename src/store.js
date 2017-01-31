@@ -53,8 +53,8 @@ export default new Vuex.Store({
         currentContext.commit('removeMessage');
       }, 3000);
     },
-    setLoggedIn(context, setLoggedIn) {
-      context.commit('setLoggedIn', setLoggedIn);
+    setLoggedIn(context, auth) {
+      context.commit('setLoggedIn', (auth.token ? true : false));
     },
-  },
+  }, 
 });
