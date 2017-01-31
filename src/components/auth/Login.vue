@@ -23,7 +23,6 @@
         user: {
           email: '',
           password: '',
-          key: 'b99ce2788da952d4e08b1876d2ae9425',
         },
       };
     },
@@ -32,7 +31,7 @@
         this.$http.post('http://hockey.app/api/authenticate', this.user)
           .then((response) => {
             this.$auth.setToken(response.data.token);
-            this.$store.commit('setCurrentUser', response.data);
+            this.$store.dispatch('setLoggedIn', true);
             this.$router.push('/');
           })
           .catch((error) => {

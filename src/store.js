@@ -7,6 +7,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    currentUser: {},
+    loggedIn: false,
     message: {
       type: 'error',
       message: '',
@@ -16,6 +18,12 @@ export default new Vuex.Store({
   getters: {
     getMessage(state) {
       return state.message;
+    },
+    isLoggedIn(state) {
+      return state.loggedIn;
+    },
+    getCurrentUser(state) {
+      return state.currentUser;
     },
   },
   mutations: {
@@ -29,6 +37,10 @@ export default new Vuex.Store({
       const currentState = state;
       currentState.message = {};
     },
+    setLoggedIn(state, loggedIn) {
+      const currentState = state;
+      currentState.loggedIn = loggedIn;
+    },
   },
   actions: {
     showMessage(context, message) {
@@ -40,6 +52,9 @@ export default new Vuex.Store({
       setTimeout(() => {
         currentContext.commit('removeMessage');
       }, 3000);
+    },
+    setLoggedIn(context, setLoggedIn) {
+      context.commit('setLoggedIn', setLoggedIn);
     },
   },
 });
