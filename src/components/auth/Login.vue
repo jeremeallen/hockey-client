@@ -30,8 +30,8 @@
       login() {
         this.$http.post('http://hockey.app/api/authenticate', this.user)
           .then((response) => {
-            this.$auth.setToken(response.data.auth.token);
-            this.$store.dispatch('setLoggedIn', response.data.auth);
+            this.$auth.setToken(response.data.user.token);
+            this.$store.dispatch('setLoggedIn', response.data.user);
             this.$router.push('/');
           })
           .catch((error) => {
