@@ -54,7 +54,8 @@ export default new Vuex.Store({
       }, 3000);
     },
     setLoggedIn(context, auth) {
-      context.commit('setLoggedIn', (auth.token ? true : false));
+      context.commit('setLoggedIn', auth.token);
+      window.localStorage.setItem('user', JSON.stringify(auth));
     },
-  }, 
+  },
 });
