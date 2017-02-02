@@ -62,7 +62,6 @@ export default new Vuex.Store({
     loadCurrentUser(context) {
       if (!context.getters.isLoggedIn) {
         if (window.localStorage.getItem('user')) {
-          context.commit('setLoggedIn', true);
           context.commit('setCurrentUser', JSON.parse(window.localStorage.getItem('user')));
         }
       }

@@ -16,6 +16,7 @@
                     <router-link to="/seasons" tag='li' active-class='active'><a>Seasons</a></router-link>
                     <router-link to="/sections" tag='li' active-class='active'><a>Sections</a></router-link>
                     <router-link to="/teams" tag='li' active-class='active'><a>Teams</a></router-link>
+                    <router-link to="/scores" tag='li' active-class='active'><a>Scores</a></router-link>
                 </ul>
                 <ul class="nav navbar-nav navbar-right ">
                     <ul class="nav navbar-nav">
