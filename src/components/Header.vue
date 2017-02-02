@@ -19,7 +19,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right ">
                     <ul class="nav navbar-nav">
-                        <li>Logout</li>
+                        <li><a href='' @click="logout">{{ user.name }} - Logout</a></li>
                     </ul>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -43,7 +43,14 @@
     },
     props: [
       'loggedIn',
+      'user',
     ],
+    methods: {
+      logout() {
+        this.$store.dispatch('logout');
+        this.$router.push('/auth/login');
+      },
+    },
   };
 </script>
 <style lang="sass">

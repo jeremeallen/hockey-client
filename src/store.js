@@ -8,7 +8,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     currentUser: {},
-    loggedIn: false,
     message: {
       type: 'error',
       message: '',
@@ -20,7 +19,10 @@ export default new Vuex.Store({
       return state.message;
     },
     isLoggedIn(state) {
-      return state.loggedIn;
+      if (state.currentUser) {
+        return state.currentUser.token;
+      }
+      return false;
     },
     getCurrentUser(state) {
       return state.currentUser;
@@ -37,9 +39,9 @@ export default new Vuex.Store({
       const currentState = state;
       currentState.message = {};
     },
-    setLoggedIn(state, loggedIn) {
+    setCurrentUser(state, user) {
       const currentState = state;
-      currentState.loggedIn = loggedIn;
+      currentState.currentUser = user;
     },
   },
   actions: {
@@ -53,9 +55,24 @@ export default new Vuex.Store({
         currentContext.commit('removeMessage');
       }, 3000);
     },
-    setLoggedIn(context, auth) {
-      context.commit('setLoggedIn', auth.token);
-      window.localStorage.setItem('user', JSON.stringify(auth));
+    setCurrentUser(context, user) {
+      context.commit('setCurrentUser', user);
+      window.localStorage.setItem('user', JSON.stringify(user));
+    },
+    loadCurrentUser(context) {
+      if (!context.getters.isLoggedIn) {
+        if (window.localStorage.getItem('user')) {
+          context.commit('setLoggedIn', true);
+          context.commit('setCurrentUser', JSON.parse(window.localStorage.getItem('user')));
+        }
+      }
+    },
+    logout(context) {
+      // Clear local storage
+      window.localStorage.removeItem('user');
+      window.localStorage.removeItem('authToken');
+      // Clear store
+      context.commit('setCurrentUser', {});
     },
   },
 });

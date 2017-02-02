@@ -1,6 +1,6 @@
 <template>
   <div id="app" class='container'>
-    <app-header v-if="loggedIn" :loggedIn="loggedIn"></app-header>
+    <app-header v-if="loggedIn" :loggedIn="loggedIn" :user="user"></app-header>
     <app-message :message="message"></app-message>
     <router-view></router-view>
   </div>
@@ -19,10 +19,16 @@ export default {
     loggedIn() {
       return true;
     },
+    user() {
+      return this.$store.getters.getCurrentUser;
+    },
   },
   components: {
     'app-message': Message,
     'app-header': Header,
+  },
+  created() {
+    this.$store.dispatch('loadCurrentUser');
   },
 };
 </script>

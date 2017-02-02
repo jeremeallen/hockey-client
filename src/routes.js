@@ -11,7 +11,7 @@ import Teams from './components/Teams';
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/auth/login', component: Login },
+  { path: '/auth/login', component: Login, meta: { allowGuest: true } },
   { path: '/conferences', component: Conferences },
   { path: '/dashboard', component: Home },
   { path: '/seasons', component: Seasons },
@@ -22,5 +22,6 @@ const routes = [
 const router = new VueRouter({
   routes,
 });
+
 
 export default router;

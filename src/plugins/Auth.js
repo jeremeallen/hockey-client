@@ -10,13 +10,13 @@ const AuthPlugin = {
   },
 
   getToken() {
-    const token = localStorage.getItem('authToken');
+    const user = localStorage.getItem('user');
 
-    if (!token) {
+    if (!user) {
       return null;
     }
 
-    return token;
+    return JSON.parse(user).token;
   },
 
   loggedIn() {
