@@ -38,7 +38,7 @@
                       <div class="form-group">
                         <label for="start_time">Game Time</label>
                         <vue-timepicker
-                                format="hh:mm A"
+                                format="kk:mm"
                                 :minute-interval="30"
                                 v-model="game.startTime">
                         </vue-timepicker>
@@ -93,6 +93,7 @@
     },
     data() {
       return {
+        momentFormat: 'YYYY/MM/DD hh:mma',
         sections: [],
         conferences: [],
         teams: [],
@@ -108,7 +109,7 @@
           home_id: null,
           visitor_id: null,
           startTime: {
-            hh: '07',
+            kk: '19',
             mm: '30',
             A: 'pm',
           },
@@ -140,7 +141,7 @@
     },
     methods: {
       displayGameTime(gameStart) {
-        return moment(gameStart).format('h:mm a, M/D/Y');
+        return moment(gameStart, this.momentFormat).format('h:mm a, M/D/Y');
       },
       getSchoolName(team) {
         if (!team || !team.school || !team.name) {
@@ -166,12 +167,12 @@
       saveGame() {
         let url = 'http://hockey.app/games';
 
-        const tempDate = moment(this.game.startDate);
-        tempDate.hour(this.game.startTime.hh);
+        const tempDate = moment(this.game.startDate, this.momentFormat);
+        tempDate.hour(this.game.startTime.kk);
         tempDate.minutes(this.game.startTime.mm);
 
         // Update the model to support the datetime format
-        this.game.start = tempDate.format('YYYY/MM/DD HH:mma Z');
+        this.game.start = tempDate.format('YYYY/MM/DD HH:mm');
 
         if (this.showAdd.mode === 'edit') {
           url += `/${this.game.id}`;
