@@ -18,7 +18,7 @@
                             <td class='text-center'>{{ team.school }}</td>
                             <td class='text-center'>{{ team.name }}</td>
                             <td class='text-center'>{{ team.conference ? team.conference.name : 'Not set' }}</td>
-                            <td class='text-center'>{{ team.section.name }}</td>
+                            <td class='text-center'>{{ team.section ? team.section.name : 'Not set' }}</td>
                             <td class='text-center'>
                                 <span class="glyphicon glyphicon-pencil text-warning"
                                     aria-hidden="true"
