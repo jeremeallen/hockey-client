@@ -17,7 +17,7 @@
                             <td class='text-center'>{{ displayGameTime(game.start) }}</td>
                             <td class='text-center'>{{ getSchoolName(game.home_team) }}</td>
                             <td class='text-center'>{{ getSchoolName(game.visitor_team) }}</td>
-                            <td class='text-center'>
+                            <td class='text-center action-items'>
                                 <span class="glyphicon glyphicon-pencil text-warning"
                                       aria-hidden="true"
                                       @click='editGame(game)'

@@ -36,4 +36,8 @@ export default {
   body {
     padding-top: 50px;
   }
+
+  td.action-items {
+    font-size: 20px
+  }
 </style>
