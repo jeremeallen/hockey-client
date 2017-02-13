@@ -88,6 +88,7 @@
         sections: [],
         conferences: [],
         teams: [],
+        scores: [],
         showAdd: {
           mode: 'add',
           show: false,
@@ -105,9 +106,9 @@
       };
     },
     created() {
-      this.$http.get('http://hockey.app/scores')
+      this.$http.get('http://hockey.app/api/scores')
         .then((response) => {
-          this.teams = response.data;
+          this.scores = response.data;
         });
 
       this.$http.get('http://hockey.app/sections')
@@ -118,6 +119,11 @@
       this.$http.get('http://hockey.app/conferences')
         .then((response) => {
           this.conferences = response.data;
+        });
+
+      this.$http.get('http://hockey.app/teams')
+        .then((response) => {
+          this.teams = response.data;
         });
     },
     computed: {
@@ -145,7 +151,7 @@
         this.score = score;
       },
       saveScore() {
-        let url = 'http://hockey.app/score';
+        let url = 'http://hockey.app/api/scores';
 
         if (this.showAdd.mode === 'edit') {
           url += `/${this.score.id}`;

@@ -17,7 +17,7 @@ export default {
       return this.$store.getters.getMessage;
     },
     loggedIn() {
-      return true;
+      return this.$auth.loggedIn();
     },
     user() {
       return this.$store.getters.getCurrentUser;
